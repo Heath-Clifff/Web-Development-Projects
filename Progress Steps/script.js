@@ -1,48 +1,44 @@
 const progress = document.getElementById('progress')
-const prev = document.getElementById('Prev')
-const next = document.getElementById('Next')
 const circles = document.querySelectorAll('.circle')
+const leftBtn = document.getElementById('leftBtn')
+const rightBtn = document.getElementById('rightBtn')
 
 let currentActive = 1
 
-next.addEventListener('click', ()=>{
-    currentActive++
-
-    if(currentActive > circles.length){
-        currentActive = circles.length
-    }
-    update()
-})
-
-prev.addEventListener('click', ()=>{
+leftBtn.addEventListener('click', () =>{
     currentActive--
-
     if(currentActive < 1){
         currentActive = 1
     }
     update()
 })
 
-function update(){
-    circles.forEach((circle, idx)=>{
-        console.log(idx)
-        if(idx < currentActive){
+rightBtn.addEventListener('click', () =>{
+    currentActive++
+    if(currentActive > circles.length){
+        currentActive = circles.length
+    }
+    update()
+})
+
+function update() {
+    const activeCircle = circles[currentActive]
+
+    circles.forEach((circle, idx) => {
+        if(currentActive > idx){
             circle.classList.add('active')
-        }
-        else{
-            circle.classList.remove('active')
-        }
+        } else {
+            circle.classList.remove('active')}
     })
 
-    const actives = document.querySelectorAll('.active')
-    progress.style.width = ((actives.length - 1)/ ((circles.length) - 1))*100 + "%"
+    progress.style.width = ((currentActive - 1) / (circles.length - 1)) * 100 + '%'
+
     if(currentActive === 1){
-        prev.disabled = true
-    } else if(currentActive === 4){
-        next.disabled = true
-    }
-    else{
-        prev.disabled = false
-        next.disabled = false
+        leftBtn.disabled = true
+    } else if(currentActive === 4) {
+        rightBtn.disabled = true
+    } else {
+        leftBtn.disabled = false
+        rightBtn.disabled = false
     }
 }
